@@ -3,8 +3,8 @@ const winston = require('winston')
 require('winston-mongodb')
 
 module.exports = {
-	startApp: function(settings, airbrakeSettings) {
-		const app = appBuilder(settings, airbrakeSettings);		
+	startApp: function(settings, airbrakeSettings, modulesDir) {
+		const app = appBuilder(settings, airbrakeSettings, modulesDir);
 
 		if (process.env.NODE_ENV === 'production'){
 		  winston.remove(winston.transports.Console)

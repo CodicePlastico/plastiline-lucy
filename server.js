@@ -6,8 +6,9 @@ const logger = require('./middlewares/logger')
 const bodyParser = require('body-parser')
 const app = express()
 const fs = require('fs')
+const path = require('path')
 
-function setup(settings, airbrakeParams) {
+function setup(settings, airbrakeParams, modulesDir) {
 	const airbrakeInstance = airbrake.init(airbrakeParams)
 	console.log('airbrake initialized')
 
@@ -33,16 +34,17 @@ function setup(settings, airbrakeParams) {
     })
   })
 
-/*
-  const modules = ['users', 'shops', 'catalogue']
-  
-  modules.forEach(m => {
-    const mod = require(`./modules/${m}`)
-    app.use(mod.routes)
-    mod.addListeners()
-  })
 
-  */
+  const modules = fs.readdirSync(modulesDir)
+  modules.forEach(m => {
+  	const moduleDir = path.join(modulesDir, m)
+  	if(fs.lstatSync(moduleDir).isDirectory()) {
+  		const mod = require(moduleDir)
+  		app.use(mod.routes)
+    	mod.addListeners()
+  		console.log('Module', m, 'loaded')
+  	}
+  })  
 
   app.use(function(err, req, res, next) {
     if (err){
