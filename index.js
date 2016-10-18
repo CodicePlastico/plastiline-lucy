@@ -1,2 +1,1 @@
-const lucy = {}
-module.exports = lucy
+module.exports = require('./lucy')
