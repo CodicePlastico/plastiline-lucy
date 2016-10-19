@@ -31,23 +31,15 @@ module.exports = {
 		console.log('Build denormalizer', sourceConnectionString, destConnectionString, denormalizer.group)
 		var source = null;
 		var dest = null
-		function connectSource(done) {
-		  mongo.connect(sourceConnectionString, (err, src)  => { 
-		    source = src
+		
+		function connect(connString, done) {
+		  mongo.connect(connString, (err, db)  => { 
 		    console.log('source ok')
-		    done() 
+		    done(null, db) 
 		  })
 		}
 
-		function connectDest(done) {
-		  mongo.connect(destConnectionString, (err, dst) => { 
-		    dest = dst
-		    console.log('dest ok')
-		    done() 
-		  })
-		}
-
-		function registerEventListener(done) {
+		function registerEventListener(source, dest) {
 			console.log('Registering subscribers', denormalizer.group)
 			denormalizer.subscribers.forEach(s => {
 				console.log('Subscribe')
@@ -65,10 +57,14 @@ module.exports = {
 
 		return function(next) {
 			console.log('Running denormalizer initialization', denormalizer.group)
-			async.series([connectSource, connectDest, registerEventListener, function(done) {
-				console.log('4th')
-				done()
-			}], function(err, res) {
+			async.series([
+				connect.bind(null, sourceConnectionString), 
+				connect.bind(null, destConnectionString), 
+				function(done) {
+					console.log('4th')
+					done()
+				}], function(err, res) {
+					registerEventListener(res[0], res[1])
 				console.log('Denormalizer registered', denormalizer.group)
 				next()				
 			})
