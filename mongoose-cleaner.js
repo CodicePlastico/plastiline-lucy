@@ -1,18 +1,24 @@
-// this plugin removes fields that are present in the database but are not
-// defined in the schema
-// NOTE: it process only first level fields and does not check nested attributes\
+const R = require('ramda')
+const ObjectId = require('mongoose').Types.ObjectId;
+
+function clean(schema){
+  R.keys(schema).forEach(k => {
+    if (k == '_id'){
+        schema.id = schema[k]
+        delete schema._id
+    } else if (R.is(Object, schema[k])){
+      clean(schema[k]) 
+    } 
+    delete schema.__v
+  })
+  return schema
+}
+
 module.exports = exports = function cleaner(schema) {
   schema.set('toJSON', {
     transform: function(doc, ret) {
-      const schemaKeys = Object.keys(schema.paths).map(p => p.split('.')[0])
-      Object.keys(ret).forEach(f => {
-        if (schemaKeys.indexOf(f) === -1){
-          delete ret[f]
-        }
-      })
-      ret.id = ret._id
-      delete ret.__v
-      delete ret._id
+      const res = clean(ret)
+      return res
     }
   })
 }
