@@ -70,5 +70,6 @@ module.exports = {
 				next()
 			})
 		}		
-	}
+	},
+	events: require('./bones/events')
 }
