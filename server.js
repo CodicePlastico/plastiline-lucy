@@ -27,12 +27,7 @@ function setup(settings, airbrakeParams, modulesDir) {
 
   console.log('body parser initialized')
 
-  app.use('/version', (req, res) => {
-    fs.readFile('./package.json', 'utf8', (err, data) => {
-      const info = JSON.parse(data)
-      res.json({version: info.version})
-    })
-  })
+  app.use('/version', require('./bones/routes/version'))
 
 
   const modules = fs.readdirSync(modulesDir)
