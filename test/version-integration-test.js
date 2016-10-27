@@ -25,7 +25,7 @@ describe('Testing version route handler', () => {
 	const fixture = fixtureBuilder(settings, airbrakeSettings, null, [])
 	
 	it('GET /version should get the version', (done) => {
-		fixture.get('version').then((response) => {
+		fixture.get('/version').then((response) => {
 			const pack = JSON.parse(fs.readFileSync('./package.json'))
 			assert.equal(200, response.status)
 			assert.equal(pack.name, response.data.name)

@@ -12,7 +12,6 @@ function setup(settings, airbrakeParams, modulesDir) {
 	const airbrakeInstance = airbrake.init(airbrakeParams)
 	console.log('airbrake initialized')
 
-
   mongoose.connect(settings.dbServer + settings.dbName)
 
   mongoose.Promise = global.Promise

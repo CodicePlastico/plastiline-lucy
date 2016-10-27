@@ -4,6 +4,7 @@ require('winston-mongodb')
 const mongo = require('mongodb').MongoClient
 const postal = require('postal')
 const async = require('async')
+const mongoose = require('mongoose')
 
 module.exports = {
 	startApp: function(settings, airbrakeSettings, modulesDir, denormalizers) {
@@ -24,6 +25,11 @@ module.exports = {
 
 		const server = app.listen(app.get('port'), (err, res) => {
 		  console.log(`Server listening on port ${server.address().port}`);
+		})
+
+		server.on('close', () => {
+			mongoose.connection.close()
+			winston.remove('mongodb')
 		})
 
 		return server
@@ -74,5 +80,8 @@ module.exports = {
 		}		
 	},
 	events: require('./bones/events'),
-	commands: require('./bones/commands')
+	commands: require('./bones/commands'),
+	test: {
+		fixture: require('./test/integration-fixture')
+	}
 }
