@@ -24,7 +24,9 @@ module.exports = {
 
 		const server = app.listen(app.get('port'), (err, res) => {
 		  console.log(`Server listening on port ${server.address().port}`);
-		});
+		})
+
+		return server
 	},
 	denormalizer: function(sourceConnectionString, destConnectionString, denormalizer) {
 		// denormalizer: [{ group: '', subscribers: [ { channel, topic, callback} ] } ]

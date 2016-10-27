@@ -13,7 +13,7 @@ function setup(settings, airbrakeParams, modulesDir) {
 	console.log('airbrake initialized')
 
 
-  mongoose.connect(settings.dbServer + settings.dbName )
+  mongoose.connect(settings.dbServer + settings.dbName)
 
   mongoose.Promise = global.Promise
   mongoose.plugin(require('./mongoose-cleaner'));
@@ -26,21 +26,21 @@ function setup(settings, airbrakeParams, modulesDir) {
   app.use(bodyParser.json())
 
   console.log('body parser initialized')
-
   app.use('/version', require('./bones/routes/version'))
 
-
-  const modules = fs.readdirSync(modulesDir)
-  modules.forEach(m => {
-  	const moduleDir = path.join(modulesDir, m)
-  	if(fs.lstatSync(moduleDir).isDirectory()) {
-  		const mod = require(moduleDir)
-  		app.use(mod.routes)
-    	mod.addListeners()
-  		console.log('Module', m, 'loaded')
-  	}
-  })  
-
+  if(modulesDir) {
+    const modules = fs.readdirSync(modulesDir)
+    modules.forEach(m => {
+      const moduleDir = path.join(modulesDir, m)
+      if(fs.lstatSync(moduleDir).isDirectory()) {
+        const mod = require(moduleDir)
+        app.use(mod.routes)
+        mod.addListeners()
+        console.log('Module', m, 'loaded')
+      }
+    })  
+  }
+  
   app.use(function(err, req, res, next) {
     if (err){
       winston.error(err)

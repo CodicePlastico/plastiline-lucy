@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/CodicePlastico/plastiline-lucy#readme",
   "dependencies": {
+    "axios": "^0.15.2",
     "chai": "^3.5.0",
     "mocha": "^3.1.2",
     "mongoose": "^4.4.10",
