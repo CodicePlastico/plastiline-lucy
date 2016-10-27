@@ -33,9 +33,14 @@ module.exports = {
 		var dest = null
 		
 		function connect(connString, done) {
-		  mongo.connect(connString, (err, db)  => { 
-		    console.log('source ok')
-		    done(null, db) 
+		  mongo.connect(connString, (err, db)  => {
+		  	if(err) {
+		  		console.log('Error connecting to', connString, err)
+		  		done(err)
+		  	} else {
+		  		console.log('Connection to', connString, 'ok')
+		    	done(null, db) 
+			}		    
 		  })
 		}
 
