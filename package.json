@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/CodicePlastico/plastiline-lucy/issues"
   },
-  "homepage": "https://github.com/CodicePlastico/plastiline-lucy#readme"
+  "homepage": "https://github.com/CodicePlastico/plastiline-lucy#readme",
+  "dependencies": {
+    "ramda": "^0.22.1"
+  }
 }
