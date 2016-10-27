@@ -16,6 +16,7 @@ schema.statics.persistCommand = (cmd, callback) => {
   if (doc.payload.password){
     doc.payload.password = '*****'
   }
+  
   return model.create(doc).then(newDoc => {
     if (typeof callback === 'function'){
       return callback(newDoc)
