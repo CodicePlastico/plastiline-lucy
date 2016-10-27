@@ -71,5 +71,6 @@ module.exports = {
 			})
 		}		
 	},
-	events: require('./bones/events')
+	events: require('./bones/events'),
+	commands: require('./bones/commands')
 }
