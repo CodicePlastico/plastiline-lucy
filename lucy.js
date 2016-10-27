@@ -52,21 +52,17 @@ module.exports = {
 				})
 			})
 			console.log('Subscribers registered')
-		  	done()
 		}
 
 		return function(next) {
 			console.log('Running denormalizer initialization', denormalizer.group)
 			async.series([
-				connect.bind(null, sourceConnectionString), 
-				connect.bind(null, destConnectionString), 
-				function(done) {
-					console.log('4th')
-					done()
-				}], function(err, res) {
-					registerEventListener(res[0], res[1])
+				connect.bind(null, sourceConnectionString),
+				connect.bind(null, destConnectionString),
+			], function(err, res) {
+				registerEventListener(res[0], res[1])
 				console.log('Denormalizer registered', denormalizer.group)
-				next()				
+				next()
 			})
 		}		
 	}
