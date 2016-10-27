@@ -4,7 +4,7 @@
   "description": "NodeJs + Express skeleton module",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node node_modules/mocha/bin/mocha"
   },
   "repository": {
     "type": "git",
@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/CodicePlastico/plastiline-lucy#readme",
   "dependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^3.1.2",
     "mongoose": "^4.4.10",
     "postal": "^1.0.8",
     "ramda": "^0.22.1"
