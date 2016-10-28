@@ -3,27 +3,9 @@ const fs = require('fs')
 const fixtureBuilder = require('./integration-fixture')
 const signatureBuilder = require('./fake-signature')
 
-const settings = {
-	env: 'test',
-	serverPort: 3103,
-	dbName: 'lucy-integration',
-	dbServer: 'mongodb://localhost:27017/',
-	log:{
-		level: 'debug',
-		db: 'mongodb://localhost:27017/lucy-integration',
-		capped: true
-	},
-	jws: {
-		secret: 'yo',
-    	alg: 'HS256'
-	}
-}
+const settings = require('./testing-settings')
 
-const airbrakeSettings = {
-	clientId: '5b4c82ad-4952-1d09-a072-53d6d7c87532',
-	serviceHost: 'exceptions.codebasehq.com',
-	protocol: 'https'
-}
+const airbrakeSettings = settings.airbrake
 
 describe('Testing version route handler', () => {
 	const modulesDir =__dirname + '/../modules'
