@@ -2,12 +2,14 @@ const express = require('express')
 const mongoose = require('mongoose')
 const winston = require('winston')
 const airbrake = require('./airbrake')
-const logger = require('./middlewares/logger')
 const bodyParser = require('body-parser')
-const app = express()
 const fs = require('fs')
 const path = require('path')
-const tokenMiddleware = require('./middlewares/token')
+
+const loggerMiddleware = require('../middlewares/logger')
+const tokenMiddleware = require('../middlewares/token')
+
+const app = express()
 
 function setup(settings, airbrakeParams, modulesDir) {
 	const airbrakeInstance = airbrake.init(airbrakeParams)
@@ -21,11 +23,9 @@ function setup(settings, airbrakeParams, modulesDir) {
   console.log('mongoose initialized')
 
   app.set('port', settings.serverPort)
-  app.use(logger)
+  app.use(loggerMiddleware)
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json())
-
-  app.use('/version', require('./bones/routes/version'))
 
   if(modulesDir) {
     const modules = fs.readdirSync(modulesDir)

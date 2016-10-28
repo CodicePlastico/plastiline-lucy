@@ -1,5 +1,5 @@
 const assert = require('chai').assert
-const fn = require('../bones/routes/version')
+const fn = require('../modules/version/get-version')
 const fs = require('fs')
 
 describe('Testing version route handler', () => {

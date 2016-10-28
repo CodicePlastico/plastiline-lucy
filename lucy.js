@@ -1,4 +1,4 @@
-const appBuilder = require('./server')
+const appBuilder = require('./bones/server')
 const winston = require('winston')
 require('winston-mongodb')
 const mongo = require('mongodb').MongoClient

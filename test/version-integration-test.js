@@ -1,7 +1,7 @@
 const assert = require('chai').assert
-const fn = require('../bones/routes/version')
 const fs = require('fs')
 const fixtureBuilder = require('./integration-fixture')
+const signatureBuilder = require('./fake-signature')
 
 const settings = {
 	env: 'test',
@@ -12,6 +12,10 @@ const settings = {
 		level: 'debug',
 		db: 'mongodb://localhost:27017/lucy-integration',
 		capped: true
+	},
+	jws: {
+		secret: 'yo',
+    	alg: 'HS256'
 	}
 }
 
@@ -22,7 +26,9 @@ const airbrakeSettings = {
 }
 
 describe('Testing version route handler', () => {
-	const fixture = fixtureBuilder(settings, airbrakeSettings, null, [])
+	const modulesDir =__dirname + '/../modules'
+	const deserializers = []
+	const fixture = fixtureBuilder(settings, airbrakeSettings, modulesDir, deserializers, signatureBuilder('test000', 'test@codiceplastico.com', settings.jws))
 	
 	it('GET /version should get the version', (done) => {
 		fixture.get('/version').then((response) => {
@@ -32,6 +38,7 @@ describe('Testing version route handler', () => {
 			assert.equal(pack.version, response.data.version)
 			done()
 		}).catch((error) => {
+			console.log(error.response.status, error.response.message)
 			done(error)
 		})
 	})
