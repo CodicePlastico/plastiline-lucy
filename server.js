@@ -7,6 +7,7 @@ const bodyParser = require('body-parser')
 const app = express()
 const fs = require('fs')
 const path = require('path')
+const tokenMiddleware = require('./middlewares/token')
 
 function setup(settings, airbrakeParams, modulesDir) {
 	const airbrakeInstance = airbrake.init(airbrakeParams)
@@ -33,7 +34,7 @@ function setup(settings, airbrakeParams, modulesDir) {
       const moduleDir = path.join(modulesDir, m)
       if(fs.lstatSync(moduleDir).isDirectory()) {
         const mod = require(moduleDir)
-        app.use(mod.routes)
+        app.use(tokenMiddleware(settings), mod.routes)
         mod.addListeners()
         console.log('Module', m, 'loaded')
       }

@@ -85,6 +85,7 @@ module.exports = {
 	events: require('./bones/events'),
 	commands: require('./bones/commands'),
 	test: {
-		fixture: require('./test/integration-fixture')
+		fixture: require('./test/integration-fixture'),
+		fakeSignature: require('./test/fake-signature')
 	}
 }
