@@ -1,6 +1,6 @@
 {
   "name": "plastiline-lucy",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "NodeJs + Express skeleton module",
   "main": "index.js",
   "scripts": {
