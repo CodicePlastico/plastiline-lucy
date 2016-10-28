@@ -25,7 +25,6 @@ function setup(settings, airbrakeParams, modulesDir) {
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json())
 
-  console.log('body parser initialized')
   app.use('/version', require('./bones/routes/version'))
 
   if(modulesDir) {
