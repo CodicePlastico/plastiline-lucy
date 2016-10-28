@@ -6,9 +6,12 @@ const signatureBuilder = require('./fake-signature')
 const settings = require('./testing-settings')
 
 describe('Testing version route handler', () => {
-	const modulesDir =__dirname + '/../modules'
-	const deserializers = []
-	const fixture = fixtureBuilder(settings, modulesDir, deserializers, signatureBuilder('test000', 'test@codiceplastico.com', settings.jws))
+	const params = {
+		settings: settings,
+		modulesDir: __dirname + '/../modules',
+		signature: signatureBuilder('test000', 'test@codiceplastico.com', settings.jws)
+	}
+	const fixture = fixtureBuilder(params)
 	
 	it('GET /version should get the version', (done) => {
 		fixture.get('/version').then((response) => {

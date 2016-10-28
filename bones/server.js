@@ -11,8 +11,8 @@ const tokenMiddleware = require('../middlewares/token')
 
 const app = express()
 
-function setup(settings, airbrakeParams, modulesDir) {
-	const airbrakeInstance = airbrake.init(airbrakeParams)
+function setup(settings, modulesDir) {
+	const airbrakeInstance = airbrake.init(settings.airbrake)
 	console.log('airbrake initialized')
 
   mongoose.connect(settings.dbServer + settings.dbName)

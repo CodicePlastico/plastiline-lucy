@@ -1,8 +1,10 @@
 const fixtureBuilder = require('../lucy').test.fixture
-const settings = require('./testing-settings')
-
-const airbrakeSettings = {}
 
 module.exports = function(signature) {
-	return fixtureBuilder(settings, null, [], signature, __dirname + '/fixtures')
+	const params = {
+		settings: require('./testing-settings'),
+		signature: signature,
+		fixturesPath: __dirname + '/fixtures'
+	}
+	return fixtureBuilder(params)
 }

@@ -7,26 +7,28 @@ const async = require('async')
 const mongoose = require('mongoose')
 
 module.exports = {
-	startApp: function(settings, airbrakeSettings, modulesDir, denormalizers, cb) {
-		const app = appBuilder(settings, airbrakeSettings, modulesDir);
+	startApp: function(providedParams) {
+		const params = Object.assign({ settings: {}, modulesDir: null,  denormalizers: [], callback: null}, providedParams)
+
+		const app = appBuilder(params.settings, params.modulesDir);
 
 		if (process.env.NODE_ENV === 'production'){
 		  winston.remove(winston.transports.Console)
 		}
 
 		winston.exitOnError = false;
-		winston.add(winston.transports.MongoDB, settings.log)
-		winston.handleExceptions(new winston.transports.MongoDB(settings.log))
+		winston.add(winston.transports.MongoDB, params.settings.log)
+		winston.handleExceptions(new winston.transports.MongoDB(params.settings.log))
 
-		if(denormalizers && denormalizers.length) {
-			console.log('Registering', denormalizers.length, 'denormalizers')
-			async.series(denormalizers, (err, res) => { console.log('Denormalizers registered') })
+		if(params.denormalizers && params.denormalizers.length) {
+			console.log('Registering', params.denormalizers.length, 'denormalizers')
+			async.series(params.denormalizers, (err, res) => { console.log('Denormalizers registered') })
 		}		
 
 		const server = app.listen(app.get('port'), (err, res) => {
 		  console.log(`Server listening on port ${server.address().port}`);
-		  if(cb) {
-		  	cb()
+		  if(params.callback) {
+		  	params.callback()
 		  }
 		})
 

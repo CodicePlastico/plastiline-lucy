@@ -2,15 +2,17 @@ const axios = require('axios')
 const mongodb = require('mongodb')
 const async = require('async')
 
-module.exports = function initIntegrationTestFixture(settings, modulesDir, denormalizers, signature, fixturesPath) {
+module.exports = function initIntegrationTestFixture(providedParams) {
+	const params = Object.assign({ signature: null, fixturesPath: null }, providedParams)
 	const clientConfig = {}
-	if(signature) {
+	if(params.signature) {
 		clientConfig.headers = {
-			'authorization': signature
+			'authorization': params.signature
 		}
 	}
+
 	var fixture = {
-		baseUrl: `http://localhost:${settings.serverPort}`,
+		baseUrl: `http://localhost:${params.settings.serverPort}`,
 		httpClient: axios.create(clientConfig),
 		buildUrl: function(url) {
 			var base = this.baseUrl
@@ -36,7 +38,7 @@ module.exports = function initIntegrationTestFixture(settings, modulesDir, denor
 			return this.httpClient.delete(theUrl, config)
 		},
 		importCollection: function(collName, done) {
-			var docs = require(`${fixturesPath}/${collName}`)
+			var docs = require(`${params.fixturesPath}/${collName}`)
 			this.mongo.collection(collName).drop(() => {
 				this.mongo.collection(collName).insertMany(docs, () => { done() })
 			})
@@ -60,12 +62,13 @@ module.exports = function initIntegrationTestFixture(settings, modulesDir, denor
 
 	before((done) => {
 		const lucy = require('../lucy')
-		server = lucy.startApp(settings, settings.airbrake, modulesDir, denormalizers, () => {
-			mongodb.MongoClient.connect(settings.dbServer + settings.dbName, (err, db) => {
+		const lucyParams = Object.assign({ callback: function() {
+			mongodb.MongoClient.connect(params.settings.dbServer + params.settings.dbName, (err, db) => {
 				fixture.mongo = db;
 				done()
 			})
-		})
+		}}, params)
+		server = lucy.startApp(lucyParams)
 	})
 
 	after(() => {
