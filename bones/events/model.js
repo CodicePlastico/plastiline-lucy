@@ -6,14 +6,10 @@ const schema = new mongoose.Schema({
   payload: {} 
 }, {collection: 'API_events'})
 
-schema.statics.persist = (evt, callback) => {
+schema.statics.persist = evt => {
   const doc = JSON.parse(JSON.stringify(evt));
   doc.timestamp = Date.now()
-  model.create(doc, (err, newDoc) => {
-    if (typeof callback === 'function'){
-      callback(newDoc)
-    }
-  })
+  return model.create(doc)
 }
 
 const model = mongoose.model('EventLog', schema)

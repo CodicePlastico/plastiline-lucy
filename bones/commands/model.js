@@ -6,7 +6,7 @@ const schema = new mongoose.Schema({
   completeTs: {type: Number, default: 0},
   payload: {} }, {collection: 'API_commands'})
 
-schema.statics.persistCommand = (cmd, callback) => {
+schema.statics.persistCommand = (cmd) => {
   const doc = JSON.parse(JSON.stringify(cmd));
   doc._id = cmd.id
   if (!doc._id){
@@ -15,14 +15,8 @@ schema.statics.persistCommand = (cmd, callback) => {
   doc.timestamp = Date.now()
   if (doc.payload.password){
     doc.payload.password = '*****'
-  }
-  
-  return model.create(doc).then(newDoc => {
-    if (typeof callback === 'function'){
-      return callback(newDoc)
-    }
-    return Promise.resolve(newDoc)
-  })
+  }  
+  return model.create(doc)
 }
 
 schema.statics.complete = (id) => {
