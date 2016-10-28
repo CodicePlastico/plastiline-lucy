@@ -6,13 +6,13 @@ const integrationTestHelper = require('./test-helper')
 describe('Testing send event', () => {  
   const fixture = integrationTestHelper()
   
-  beforeEach(() => {
+  beforeEach((done) => {
     postal.reset()
-    fixture.drop('events')
+    fixture.drop('events').then(done).catch(() => done())
   })
 
   it('Should publish using postal', (done) => {
-
+    console.log('Test method')
     postal.subscribe({
       channel: 'events',
       topic: 'fake-event',

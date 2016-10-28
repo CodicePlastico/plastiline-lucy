@@ -42,7 +42,7 @@ module.exports = function initIntegrationTestFixture(settings, modulesDir, denor
 			})
 		},
 		drop: function(collName, callback) {
-  		this.mongo.collection(collName).drop(callback)
+  			return this.mongo.collection(collName).drop()
 		},
 		executeCmd: function(fn) {
 			fn(this.mongo)
