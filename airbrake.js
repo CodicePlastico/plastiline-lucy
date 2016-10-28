@@ -11,6 +11,11 @@ module.exports = {
 		  client.handleExceptions();
 		}
 
+		process.on('uncaughtException', function(err) {
+		  airbrake._onError(err, false);
+		});
+
 		return client
 	}
 };
+
