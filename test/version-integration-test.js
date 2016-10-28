@@ -5,12 +5,10 @@ const signatureBuilder = require('./fake-signature')
 
 const settings = require('./testing-settings')
 
-const airbrakeSettings = settings.airbrake
-
 describe('Testing version route handler', () => {
 	const modulesDir =__dirname + '/../modules'
 	const deserializers = []
-	const fixture = fixtureBuilder(settings, airbrakeSettings, modulesDir, deserializers, signatureBuilder('test000', 'test@codiceplastico.com', settings.jws))
+	const fixture = fixtureBuilder(settings, modulesDir, deserializers, signatureBuilder('test000', 'test@codiceplastico.com', settings.jws))
 	
 	it('GET /version should get the version', (done) => {
 		fixture.get('/version').then((response) => {

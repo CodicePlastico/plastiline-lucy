@@ -2,7 +2,7 @@ const axios = require('axios')
 const mongodb = require('mongodb')
 const async = require('async')
 
-module.exports = function initIntegrationTestFixture(settings, airbrakeSettings, modulesDir, denormalizers, signature, fixturesPath) {
+module.exports = function initIntegrationTestFixture(settings, modulesDir, denormalizers, signature, fixturesPath) {
 	const clientConfig = {}
 	if(signature) {
 		clientConfig.headers = {
@@ -60,7 +60,7 @@ module.exports = function initIntegrationTestFixture(settings, airbrakeSettings,
 
 	before((done) => {
 		const lucy = require('../lucy')
-		server = lucy.startApp(settings, airbrakeSettings, modulesDir, denormalizers, () => {
+		server = lucy.startApp(settings, settings.airbrake, modulesDir, denormalizers, () => {
 			mongodb.MongoClient.connect(settings.dbServer + settings.dbName, (err, db) => {
 				fixture.mongo = db;
 				done()
