@@ -7,7 +7,7 @@ const async = require('async')
 const mongoose = require('mongoose')
 
 module.exports = {
-	startApp: function(settings, airbrakeSettings, modulesDir, denormalizers) {
+	startApp: function(settings, airbrakeSettings, modulesDir, denormalizers, cb) {
 		const app = appBuilder(settings, airbrakeSettings, modulesDir);
 
 		if (process.env.NODE_ENV === 'production'){
@@ -25,6 +25,9 @@ module.exports = {
 
 		const server = app.listen(app.get('port'), (err, res) => {
 		  console.log(`Server listening on port ${server.address().port}`);
+		  if(cb) {
+		  	cb()
+		  }
 		})
 
 		server.on('close', () => {

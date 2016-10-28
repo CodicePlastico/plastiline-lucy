@@ -22,9 +22,9 @@ module.exports = function initIntegrationTestFixture(settings, airbrakeSettings,
 	}
 	var server = null
 
-	before(() => {
+	before((done) => {
 		const lucy = require('../lucy')
-		server = lucy.startApp(settings, airbrakeSettings, modulesDir, denormalizers)
+		server = lucy.startApp(settings, airbrakeSettings, modulesDir, denormalizers, done)
 	})
 
 	after(() => {
