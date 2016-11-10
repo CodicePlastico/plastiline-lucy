@@ -1,3 +1,4 @@
+const express = require('express')
 const appBuilder = require('./bones/server')
 const winston = require('winston')
 require('winston-mongodb')
@@ -6,11 +7,18 @@ const postal = require('postal')
 const async = require('async')
 const mongoose = require('mongoose')
 
+var app = express()
+
 module.exports = {
 	startApp: function(providedParams) {
-		const params = Object.assign({ settings: {}, modulesDir: null,  denormalizers: [], callback: null}, providedParams)
+		const params = Object.assign({ settings: {}, modulesDir: null,  denormalizers: [], inizializer:null, callback: null}, providedParams)
 
-		const app = appBuilder(params.settings, params.modulesDir);
+    if (params.inizializer){
+			console.log('Registering custom inizializer')
+			params.inizializer(app)
+		}
+
+		app = appBuilder(app, params.settings, params.modulesDir);
 
 		if (process.env.NODE_ENV === 'production'){
 		  winston.remove(winston.transports.Console)
@@ -23,7 +31,7 @@ module.exports = {
 		if(params.denormalizers && params.denormalizers.length) {
 			console.log('Registering', params.denormalizers.length, 'denormalizers')
 			async.series(params.denormalizers, (err, res) => { console.log('Denormalizers registered') })
-		}		
+		}
 
 		const server = app.listen(app.get('port'), (err, res) => {
 		  console.log(`Server listening on port ${server.address().port}`);

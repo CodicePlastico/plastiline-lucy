@@ -1,4 +1,3 @@
-const express = require('express')
 const mongoose = require('mongoose')
 const winston = require('winston')
 const airbrake = require('./airbrake')
@@ -9,9 +8,7 @@ const path = require('path')
 const loggerMiddleware = require('../middlewares/logger')
 const tokenMiddleware = require('../middlewares/token')
 
-const app = express()
-
-function setup(settings, modulesDir) {
+function setup(app, settings, modulesDir) {
 	const airbrakeInstance = airbrake.init(settings.airbrake)
 	console.log('airbrake initialized')
 
