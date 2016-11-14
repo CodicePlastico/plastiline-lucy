@@ -8,7 +8,7 @@ const path = require('path')
 const loggerMiddleware = require('../middlewares/logger')
 const tokenMiddleware = require('../middlewares/token')
 
-function setup(app, settings, modules) {
+function setup(app, settings, modules, initializer) {
 	const airbrakeInstance = airbrake.init(settings.airbrake)
 	console.log('airbrake initialized')
 
@@ -32,6 +32,11 @@ function setup(app, settings, modules) {
       console.log('Module', m, 'loaded')
     })  
   }
+
+  if (initializer){
+	  console.log('Registering custom initializer')
+		initializer(app)
+	}
   
   app.use(function(err, req, res, next) {
     if (err){

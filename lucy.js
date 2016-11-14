@@ -13,12 +13,7 @@ module.exports = {
 	startApp: function(providedParams) {
 		const params = Object.assign({ settings: {}, modules: [],  denormalizers: [], initializer:null, callback: null}, providedParams)
 
-    if (params.initializer){
-			console.log('Registering custom initializer')
-			params.initializer(app)
-		}
-
-		app = appBuilder(app, params.settings, params.modules);
+		app = appBuilder(app, params.settings, params.modules, params.initializer);
 
 		if (process.env.NODE_ENV === 'production'){
 		  winston.remove(winston.transports.Console)
