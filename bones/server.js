@@ -8,7 +8,7 @@ const path = require('path')
 const loggerMiddleware = require('../middlewares/logger')
 const tokenMiddleware = require('../middlewares/token')
 
-function setup(app, settings, modulesDir) {
+function setup(app, settings, modules) {
 	const airbrakeInstance = airbrake.init(settings.airbrake)
 	console.log('airbrake initialized')
 
@@ -24,8 +24,7 @@ function setup(app, settings, modulesDir) {
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json())
 
-  if(modulesDir) {
-    const modules = fs.readdirSync(modulesDir)
+  if(modules) {
     modules.forEach(m => {
       const moduleDir = path.join(modulesDir, m)
       if(fs.lstatSync(moduleDir).isDirectory()) {

@@ -11,14 +11,14 @@ var app = express()
 
 module.exports = {
 	startApp: function(providedParams) {
-		const params = Object.assign({ settings: {}, modulesDir: null,  denormalizers: [], inizializer:null, callback: null}, providedParams)
+		const params = Object.assign({ settings: {}, modules: [],  denormalizers: [], inizializer:null, callback: null}, providedParams)
 
     if (params.inizializer){
 			console.log('Registering custom inizializer')
 			params.inizializer(app)
 		}
 
-		app = appBuilder(app, params.settings, params.modulesDir);
+		app = appBuilder(app, params.settings, params.modules);
 
 		if (process.env.NODE_ENV === 'production'){
 		  winston.remove(winston.transports.Console)
