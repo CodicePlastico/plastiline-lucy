@@ -26,13 +26,10 @@ function setup(app, settings, modules) {
 
   if(modules) {
     modules.forEach(m => {
-      const moduleDir = path.join(modulesDir, m)
-      if(fs.lstatSync(moduleDir).isDirectory()) {
-        const mod = require(moduleDir)
-        app.use(tokenMiddleware(settings), mod.routes)
-        mod.addListeners()
-        console.log('Module', m, 'loaded')
-      }
+      const mod = require(m)
+      app.use(tokenMiddleware(settings), mod.routes)
+      mod.addListeners()
+      console.log('Module', m, 'loaded')
     })  
   }
   
