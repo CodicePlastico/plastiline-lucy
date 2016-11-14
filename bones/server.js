@@ -23,6 +23,13 @@ function setup(app, settings, modules, initializer) {
   app.use(loggerMiddleware)
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json())
+  // TODO: Find a better solution
+  app.locals.tokenMiddleware = tokenMiddleware
+
+  if (initializer){
+	  console.log('Registering custom initializer')
+		initializer(app)
+	}
 
   if(modules) {
     modules.forEach(m => {
@@ -32,11 +39,6 @@ function setup(app, settings, modules, initializer) {
       console.log('Module', m, 'loaded')
     })  
   }
-
-  if (initializer){
-	  console.log('Registering custom initializer')
-		initializer(app)
-	}
   
   app.use(function(err, req, res, next) {
     if (err){
