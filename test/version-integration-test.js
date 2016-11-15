@@ -21,7 +21,6 @@ describe('Testing version route handler', () => {
 			assert.equal(pack.version, response.data.version)
 			done()
 		}).catch((error) => {
-			console.log(error.response.status, error.response.message)
 			done(error)
 		})
 	})

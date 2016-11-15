@@ -12,7 +12,6 @@ describe('Testing send event', () => {
   })
 
   it('Should publish using postal', (done) => {
-    console.log('Test method')
     postal.subscribe({
       channel: 'events',
       topic: 'fake-event',

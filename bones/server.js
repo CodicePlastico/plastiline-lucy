@@ -10,14 +10,11 @@ const tokenMiddleware = require('../middlewares/token')
 
 function setup(app, settings, modules, initializer) {
 	const airbrakeInstance = airbrake.init(settings.airbrake)
-	console.log('airbrake initialized')
-
+	
   mongoose.connect(settings.dbServer + settings.dbName)
 
   mongoose.Promise = global.Promise
   mongoose.plugin(require('./mongoose-cleaner'));
-
-  console.log('mongoose initialized')
 
   app.set('port', settings.serverPort)
   app.use(loggerMiddleware)
@@ -27,7 +24,6 @@ function setup(app, settings, modules, initializer) {
   app.locals.tokenMiddleware = tokenMiddleware
 
   if (initializer){
-	  console.log('Registering custom initializer')
 		initializer(app)
 	}
 
@@ -36,7 +32,6 @@ function setup(app, settings, modules, initializer) {
       const mod = require(m)
       app.use(tokenMiddleware(settings), mod.routes)
       mod.addListeners()
-      console.log('Module', m, 'loaded')
     })  
   }
   

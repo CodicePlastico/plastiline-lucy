@@ -73,7 +73,6 @@ module.exports = function initIntegrationTestFixture(providedParams) {
 
 	after(() => {
 		if(server && server.close) {
-			console.log('Shutting down HTTP server after integration tests')
 			server.close()
 			fixture.mongo.close()
 		}		
