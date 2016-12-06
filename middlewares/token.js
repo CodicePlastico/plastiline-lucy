@@ -22,6 +22,7 @@ module.exports = function(settings) {
         const payload = JSON.parse(jws.decode(token).payload)
         // TODO: verificare che l'utente esista
         res.locals.userInfo = payload
+        req.userInfo = payload
         return next()
       }
     } 
