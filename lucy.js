@@ -13,7 +13,7 @@ module.exports = {
 	startApp: function(providedParams) {
 		const params = Object.assign({ settings: {}, modules: [],  denormalizers: [], initializer:null, callback: null}, providedParams)
 
-		app = appBuilder(app, params.settings, params.modules, params.initializer);
+		app = appBuilder(app, params.settings, params.modules, params.initializer, paramas.postInit);
 
 		if (process.env.NODE_ENV === 'production'){
 		  winston.remove(winston.transports.Console)

@@ -1,6 +1,5 @@
 const mongoose = require('mongoose')
 const winston = require('winston')
-const airbrake = require('./airbrake')
 const bodyParser = require('body-parser')
 const fs = require('fs')
 const path = require('path')
@@ -8,9 +7,7 @@ const path = require('path')
 const loggerMiddleware = require('../middlewares/logger')
 const tokenMiddleware = require('../middlewares/token')
 
-function setup(app, settings, modules, initializer) {
-	const airbrakeInstance = airbrake.init(settings.airbrake)
-	
+function setup(app, settings, modules, initializer, postInit) {
   mongoose.connect(settings.dbServer + settings.dbName)
 
   mongoose.Promise = global.Promise
@@ -35,11 +32,14 @@ function setup(app, settings, modules, initializer) {
     })  
   }
   
+  if (postInit){
+    postInit(app)
+  }
+
   app.use(function(err, req, res, next) {
     if (err){
       winston.error(err)
-      airbrakeInstance.notify(err)
-      res.status(500).json({status: 500});
+      res.status(500).json({status: 500, error: err});
     }
     next()
   })
