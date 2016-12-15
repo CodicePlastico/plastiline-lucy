@@ -35,7 +35,10 @@ module.exports = {
 		})
 
 		server.on('close', () => {
-			mongoose.connection.close()
+			if (mongoose.connection.readyState === 1)
+			{	
+				mongoose.connection.close()
+			}
 			winston.remove('mongodb')
 		})
 
